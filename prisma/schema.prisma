@@ -34,9 +34,6 @@ model User {
 
   followers Follows[] @relation("following") // users who follow this user
   following Follows[] @relation("follower") // users this user follows
-
-  notifications        Notification[] @relation("userNotifications") // notifications received by a user
-  notificationsCreated Notification[] @relation("notificationCreator") // notifications triggered by a user
 }
 
 model Post {
@@ -51,7 +48,6 @@ model Post {
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade) // cascade delete means delete all posts if author is deleted
   comments      Comment[]
   likes         Like[]
-  notifications Notification[]
 }
 
 model Comment {
@@ -64,7 +60,6 @@ model Comment {
   // Relations
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
   post          Post           @relation(fields: [postId], references: [id], onDelete: Cascade)
-  notifications Notification[]
 
   @@index([authorId, postId]) // composite index for faster queries
 }
@@ -94,29 +89,4 @@ model Follows {
 
   @@id([followerId, followingId]) // composite primary key prevents duplicate follows
   @@index([followerId, followingId]) // composite index for faster queries
-}
-
-model Notification {
-  id        String           @id @default(cuid())
-  userId    String
-  creatorId String
-  type      NotificationType
-  read      Boolean          @default(false)
-  postId    String?
-  commentId String?
-  createdAt DateTime         @default(now())
-
-  // Relations
-  user    User     @relation("userNotifications", fields: [userId], references: [id], onDelete: Cascade)
-  creator User     @relation("notificationCreator", fields: [creatorId], references: [id], onDelete: Cascade)
-  post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  comment Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
-
-  @@index([userId, createdAt])
-}
-
-enum NotificationType {
-  LIKE
-  COMMENT
-  FOLLOW
 }

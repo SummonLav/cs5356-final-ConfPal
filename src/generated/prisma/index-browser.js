@@ -161,17 +161,6 @@ exports.Prisma.FollowsScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.NotificationScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  creatorId: 'creatorId',
-  type: 'type',
-  read: 'read',
-  postId: 'postId',
-  commentId: 'commentId',
-  createdAt: 'createdAt'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -186,11 +175,6 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.NotificationType = exports.$Enums.NotificationType = {
-  LIKE: 'LIKE',
-  COMMENT: 'COMMENT',
-  FOLLOW: 'FOLLOW'
-};
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -198,7 +182,6 @@ exports.Prisma.ModelName = {
   Comment: 'Comment',
   Like: 'Like',
   Follows: 'Follows',
-  Notification: 'Notification'
 };
 
 /**
