@@ -36,6 +36,35 @@ async function Sidebar() {
 
             {user.bio && <p className="mt-3 text-sm text-muted-foreground">{user.bio}</p>}
 
+            {user.researchInterest && (
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
+                {user.researchInterest
+                  .split(/[,;]\s*/)
+                  .filter((tag) => tag.length > 0)
+                  .map((tag, index) => {
+                    const colorClasses = [
+                      "bg-red-100 text-red-800",
+                      "bg-yellow-100 text-yellow-800",
+                      "bg-green-100 text-green-800",
+                      "bg-blue-100 text-blue-800",
+                      "bg-purple-100 text-purple-800",
+                      "bg-pink-100 text-pink-800",
+                      "bg-orange-100 text-orange-800",
+                    ];
+                    const color = colorClasses[index % colorClasses.length]; // 循环使用颜色
+
+                    return (
+                      <span
+                        key={index}
+                        className={`px-2 py-0.5 text-xs font-medium rounded-full border ${color}`}
+                      >
+                        {tag}
+                      </span>
+                    );
+                  })}
+              </div>
+            )}
+
             <div className="w-full">
               <Separator className="my-4" />
               <div className="flex justify-between">

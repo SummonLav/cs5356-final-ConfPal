@@ -1,15 +1,16 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
-// import ImageUpload from "./ImageUpload";
 import { createPost } from "@/actions/post.action";
+
+const MAX_LENGTH = 280;
 
 function CreatePost() {
   const { user } = useUser();
@@ -18,6 +19,17 @@ function CreatePost() {
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
 
+  // 恢复草稿
+  useEffect(() => {
+    const saved = localStorage.getItem("draft");
+    if (saved) setContent(saved);
+  }, []);
+
+  // 自动保存草稿
+  useEffect(() => {
+    localStorage.setItem("draft", content);
+  }, [content]);
+
   const handleSubmit = async () => {
     if (!content.trim() && !imageUrl) return;
 
@@ -25,11 +37,10 @@ function CreatePost() {
     try {
       const result = await createPost(content, imageUrl);
       if (result?.success) {
-        // reset the form
         setContent("");
         setImageUrl("");
         setShowImageUpload(false);
-
+        localStorage.removeItem("draft");
         toast.success("Post created successfully");
       }
     } catch (error) {
@@ -41,20 +52,27 @@ function CreatePost() {
   };
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-6 shadow-sm border border-gray-200">
       <CardContent className="pt-6">
         <div className="space-y-4">
           <div className="flex space-x-4">
             <Avatar className="w-10 h-10">
               <AvatarImage src={user?.imageUrl || "/avatar.png"} />
             </Avatar>
-            <Textarea
-              placeholder="What's on your mind?"
-              className="min-h-[100px] resize-none border-none focus-visible:ring-0 p-0 text-base"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              disabled={isPosting}
-            />
+            <div className="flex-1">
+              <Textarea
+                placeholder="What's on your mind?"
+                className="min-h-[100px] resize-none border-none focus-visible:ring-0 bg-muted/20 text-base p-3 rounded-md"
+                value={content}
+                onChange={(e) =>
+                  setContent(e.target.value.slice(0, MAX_LENGTH))
+                }
+                disabled={isPosting}
+              />
+              <div className="text-right text-xs text-gray-500 mt-1">
+                {content.length}/{MAX_LENGTH}
+              </div>
+            </div>
           </div>
 
           {/* {(showImageUpload || imageUrl) && (
@@ -85,7 +103,8 @@ function CreatePost() {
               </Button>
             </div>
             <Button
-              className="flex items-center"
+              variant="default"
+              className="flex items-center px-4 py-2 rounded-full"
               onClick={handleSubmit}
               disabled={(!content.trim() && !imageUrl) || isPosting}
             >
@@ -107,4 +126,5 @@ function CreatePost() {
     </Card>
   );
 }
+
 export default CreatePost;

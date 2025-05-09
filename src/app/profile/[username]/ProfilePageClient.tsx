@@ -56,6 +56,7 @@ function ProfilePageClient({
     name: user.name || "",
     bio: user.bio || "",
     location: user.location || "",
+    researchInterest: user.researchInterest || "",
     website: user.website || "",
   });
 
@@ -105,6 +106,12 @@ function ProfilePageClient({
                 <h1 className="mt-4 text-2xl font-bold">{user.name ?? user.username}</h1>
                 <p className="text-muted-foreground">@{user.username}</p>
                 <p className="mt-2 text-sm">{user.bio}</p>
+                {user.researchInterest && (
+                  <p className="text-sm text-muted-foreground">
+                    {user.researchInterest}
+                  </p>
+                )}
+
 
                 {/* PROFILE STATS */}
                 <div className="w-full mt-6">
@@ -253,6 +260,15 @@ function ProfilePageClient({
                   value={editForm.location}
                   onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
                   placeholder="Where are you based?"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Research Interest</Label>
+                <Input
+                  name="researchInterest"
+                  value={editForm.researchInterest}
+                  onChange={(e) => setEditForm({ ...editForm, researchInterest: e.target.value })}
+                  placeholder="What is your research interest?"
                 />
               </div>
               <div className="space-y-2">

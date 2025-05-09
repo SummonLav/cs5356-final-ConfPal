@@ -1,8 +1,9 @@
-import { Link } from "lucide-react";
+
 import MobileNavbar from "./MobileNavbar";
 import DesktopNavbar from "./DesktopNavbar";
 import { currentUser } from "@clerk/nextjs/server";
 import { syncUser } from "@/actions/user.action";
+import Link from "next/link";
 
 async function Navbar() {
   const user = await currentUser();

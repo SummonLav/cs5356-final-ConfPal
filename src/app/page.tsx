@@ -1,5 +1,6 @@
 import { getPosts } from "@/actions/post.action";
 import { getDbUserId } from "@/actions/user.action";
+import CHIUpdates from "@/components/CHIUpdates";
 import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
 import WhoToFollow from "@/components/WhoToFollow";
@@ -23,6 +24,7 @@ export default async function Home() {
       </div>
 
       <div className="hidden lg:block lg:col-span-4 sticky top-20">
+        <CHIUpdates />
         <WhoToFollow />
       </div>
     </div>
