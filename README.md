@@ -36,7 +36,7 @@ Starter Code: https://github.com/burakorkmez/nextjs-course.git
 
 ## 📷 Preview
 
-https://cs5356-final-confpal-69scda7ge-summonlavs-projects.vercel.app
+https://cs5356-final-confpal-n4cg2lrtb-summonlavs-projects.vercel.app
 
 ## 🔧 Setup
 
